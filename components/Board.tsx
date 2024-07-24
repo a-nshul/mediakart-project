@@ -1,4 +1,4 @@
-"use client";
+"use client"
 import { useState } from "react";
 import { message, Button } from "antd";
 import Square from "./Square";
@@ -18,6 +18,8 @@ const Board: React.FC = () => {
     const winner = calculateWinner(newSquares);
     if (winner) {
       message.success(`Winner: ${winner === 'cat' ? 'Cat' : 'Dog'}`);
+    } else if (!newSquares.includes(null)) {
+      message.info("No winner, it's a draw!");
     }
   };
 
@@ -33,21 +35,21 @@ const Board: React.FC = () => {
   const winner = calculateWinner(squares);
   const status = winner
     ? `Winner: ${winner === "cat" ? "Cat" : "Dog"}`
-    : `Next player: ${isXNext ? "Cat" : "Dog"}`;
+    : squares.includes(null)
+    ? `Next player: ${isXNext ? "Cat" : "Dog"}`
+    : "Game over: It's a draw!";
 
   return (
     <div className="bg-sky-600">
-    <div className="flex flex-col items-center">
-      <div className="mb-6 text-2xl font-bold">{status}</div>
-      <div className="grid grid-cols-3 gap-2">
-        {Array.from({ length: 9 }, (_, index) => renderSquare(index))}
-      </div>
-      {winner && (
+      <div className="flex flex-col items-center">
+        <div className="mb-6 text-2xl font-bold">{status}</div>
+        <div className="grid grid-cols-3 gap-2">
+          {Array.from({ length: 9 }, (_, index) => renderSquare(index))}
+        </div>
         <Button type="primary" onClick={resetGame} className="mt-6 text-lg px-6 py-3">
           Reset and play again
         </Button>
-      )}
-    </div>
+      </div>
     </div>
   );
 };
